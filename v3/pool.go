@@ -58,6 +58,7 @@ func (p *Pool) Remove(pb *ProgressBar) {
 	for index, _ := range p.bars {
 		if p.bars[index] == pb {
 			p.bars = append(p.bars[:index], p.bars[index+1:]...)
+			break
 		}
 	}
 }
