@@ -1,3 +1,4 @@
+//go:build linux || darwin || freebsd || netbsd || openbsd || solaris || dragonfly || windows || plan9 || aix
 // +build linux darwin freebsd netbsd openbsd solaris dragonfly windows plan9 aix
 
 package pb
@@ -48,6 +49,16 @@ func (p *Pool) Add(pbs ...*ProgressBar) {
 		bar.Set(Static, true)
 		bar.Start()
 		p.bars = append(p.bars, bar)
+	}
+}
+
+func (p *Pool) Remove(pb *ProgressBar) {
+	p.m.Lock()
+	defer p.m.Unlock()
+	for index, _ := range p.bars {
+		if p.bars[index] == pb {
+			p.bars = append(p.bars[:index], p.bars[index+1:]...)
+		}
 	}
 }
 
